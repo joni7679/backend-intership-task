@@ -70,49 +70,51 @@ exports.updateNotes = async (req, res) => {
     try {
         const notesId = req.params.id;
         let { title, content } = req.body;
+
         if (title === undefined && content === undefined) {
             return res.status(400).json({
                 success: false,
-                message: "Provide at least title or content to update"
-            });
+                message: "provided at least title or content update"
+            })
         }
-        const updateData = {}
+
+        const updateData = {};
 
         if (title !== undefined) {
             title = title.trim();
             if (!title) {
                 return res.status(400).json({
                     success: false,
-                    message: "title can not be empty"
-                })
+                    message: "Title cannot be empty"
+                });
             }
-            updateData.title = title
+            updateData.title = title;
         }
-
         if (content !== undefined) {
-            content = title.trim();
+            content = content.trim();
             if (!content) {
                 return res.status(400).json({
                     success: false,
-                    message: "content can not be empty"
-                })
+                    message: "Content cannot be empty"
+                });
             }
-            updateData.content = content
+            updateData.content = content;
         }
-        const updateNotes = await notesModel.findByIdAndUpdate(notesId, updateData, { new: true });
-        if (!updateNotes) {
-            return res.satatus(4040).json({
-                success: false,
+
+        const updateNote = await notesModel.findByIdAndUpdate(notesId, updateData, { new: true });
+
+        if (!updateNote) {
+            return res.status.json({
+                success: fale,
                 message: "note not found"
             })
         }
-        res.status(200).json(
-            {
-                success: true,
-                message: "notes update successfuly",
-                data: updateData
-            }
-        )
+
+        return res.status(200).json({
+            success: true,
+            message: "Note updated successfully",
+            data: updateNote
+        });
     } catch (error) {
         res.status(500).json({
             success: false,
